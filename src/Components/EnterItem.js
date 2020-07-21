@@ -1,6 +1,6 @@
 import React from "react";
 
-function EnterItem() {
+function EnterItem({ itemNo, totalCount, handleRemove }) {
   return (
     <div className="item-content">
       <div className="item-container">
@@ -8,9 +8,12 @@ function EnterItem() {
           <button className="add-button"></button>
           <div className="add-text">
             <h2>Add file</h2>
-            <p>or select a folder</p>
+            <p style={{ cursor: "pointer" }}>or select a folder</p>
           </div>
-          <div className="item-counter"></div>
+          <div className="item-counter">
+            {itemNo}/{totalCount}
+          </div>
+          <div className="remove-item" onClick={handleRemove}></div>
         </div>
         <div
           className="description"
