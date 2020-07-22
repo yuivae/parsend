@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EnterItem from "./EnterItem";
 
 function Mobile() {
   //setting a dynamic case state
   const [caseID, setCaseID] = useState("#1924");
-  const [itemCount, setItemCount] = useState(1);
   const [itemList, setItemList] = useState([0]);
+  const itemRef = useRef();
   function addField() {
+    //creates an array with item numbers. Problem: first click returns the same initial array
     setItemList([...itemList, itemList.length]);
     console.log(itemList);
   }
-  function removeHandler() {}
+  function removeHandler() {
+    //removes the selected component. Problem: can not identify the selected component
+    setItemList(itemList.splice(itemList[itemRef], 1, 0));
+    console.log(itemList);
+  }
+
   return (
     <div id="mobile">
       <div id="header">
@@ -21,6 +27,7 @@ function Mobile() {
       <div id="middle">
         {itemList.map((item, index) => (
           <EnterItem
+            ref={itemRef}
             key={index}
             itemNo={index + 1}
             totalCount={itemList.length}
