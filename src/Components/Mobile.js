@@ -11,26 +11,29 @@ function Mobile() {
       itemNo: 1,
     },
   ]);
+  //removeQuery will trigger useEffect and eventually handle removing selected items
   const [removeQuery, setRemoveQuery] = useState();
 
   function addField() {
-    //how to set the current itemList based on the values of the previous itemlist ?
     setItemList([
       ...itemList,
       {
-        itemNo: itemList.itemNo + 1,
+        itemNo: itemList[itemList.length - 1].itemNo + 1,
       },
     ]);
-    //my console log currently opting the existing initial item. And it returns the itemNo as NaN.
-    //this means that the structure of setItemList above, is wrong; I'm not successfuly getting the previous state property.
-    console.log(itemList.map((item) => item.itemNo));
+    //my console log currently opting the existing initial item.
+    console.log(
+      "itemNos ",
+      itemList.map((item) => item.itemNo)
+    );
+    console.log("itemList ", itemList);
   }
 
   //removeHandler creates a removeKey and uses it to set removeQuery.
   //console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered onClick of remove button
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
-    console.log("removequery but why?", removeQuery);
+    // console.log("removequery but why?", removeQuery);
   };
 
   //useEffect won't get triggered by removequery
