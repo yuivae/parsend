@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 function EnterItem({ itemNo, totalCount, handleRemove }) {
+  let itemKey = itemNo - 1;
+  handleRemove(itemKey);
   return (
     <div className="item-content">
       <div className="item-container">
         <div className="add-section">
           <button className="add-button">
-            <i class="fas fa-plus"></i>
+            <i className="fas fa-plus"></i>
           </button>
           <div className="add-text">
             <h2>Add file</h2>
@@ -16,7 +18,7 @@ function EnterItem({ itemNo, totalCount, handleRemove }) {
             {itemNo}/{totalCount}
           </div>
           <div className="remove-item" onClick={handleRemove}>
-            <i class="fas fa-times"></i>
+            <i className="fas fa-times"></i>
           </div>
         </div>
         <div

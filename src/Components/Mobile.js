@@ -2,20 +2,42 @@ import React, { useState, useEffect, useRef } from "react";
 import EnterItem from "./EnterItem";
 
 function Mobile() {
-  //setting a dynamic case state
+  //setting a dynamic caseID state for later use this will be edited by input
   const [caseID, setCaseID] = useState("#1924");
-  const [itemList, setItemList] = useState([0]);
-  const itemRef = useRef();
+
+  //setting an itemList state for the items in the case
+  const [itemList, setItemList] = useState([
+    {
+      itemNo: 1,
+    },
+  ]);
+  const [removeQuery, setRemoveQuery] = useState();
+
   function addField() {
-    //creates an array with item numbers. Problem: first click returns the same initial array
-    setItemList([...itemList, itemList.length]);
-    console.log(itemList);
+    //how to set the current itemList based on the values of the previous itemlist ?
+    setItemList([
+      ...itemList,
+      {
+        itemNo: itemList.itemNo + 1,
+      },
+    ]);
+    //my console log currently opting the existing initial item. And it returns the itemNo as NaN.
+    //this means that the structure of setItemList above, is wrong; I'm not successfuly getting the previous state property.
+    console.log(itemList.map((item) => item.itemNo));
   }
-  function removeHandler() {
-    //removes the selected component. Problem: can not identify the selected component
-    setItemList(itemList.splice(itemList[itemRef], 1, 0));
-    console.log(itemList);
-  }
+
+  //removeHandler creates a removeKey and uses it to set removeQuery.
+  //console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered onClick of remove button
+  const removeHandler = (removeKey) => {
+    setRemoveQuery(removeKey);
+    console.log("removequery but why?", removeQuery);
+  };
+
+  //useEffect won't get triggered by removequery
+  useEffect(() => {
+    //setItemList uses removeQuery to remove the selected item from the array of itemList
+    setItemList(itemList.splice(removeQuery, 1));
+  }, removeQuery);
 
   return (
     <div id="mobile">
@@ -27,8 +49,6 @@ function Mobile() {
       <div id="middle">
         {itemList.map((item, index) => (
           <EnterItem
-            ref={itemRef}
-            key={index}
             itemNo={index + 1}
             totalCount={itemList.length}
             handleRemove={removeHandler}
