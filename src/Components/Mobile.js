@@ -21,7 +21,7 @@ function Mobile() {
         itemNo: itemList[itemList.length - 1].itemNo + 1,
       },
     ]);
-    //my console log currently opting the existing initial item.
+    //__PROBLEM__: my console log currently opting the existing initial item. itemList.length is 1 after the click, it should be two ??
     console.log(
       "itemNos ",
       itemList.map((item) => item.itemNo)
@@ -30,16 +30,18 @@ function Mobile() {
   }
 
   //removeHandler creates a removeKey and uses it to set removeQuery.
-  //console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered onClick of remove button
+
+  //__PROBLEM__: console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered onClick of remove button ??
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
-    // console.log("removequery but why?", removeQuery);
+    console.log("removequery", removeQuery);
   };
 
-  //useEffect won't get triggered by removequery
+  //__PROBLEM__: useEffect won't get triggered by removeQuery ??
   useEffect(() => {
     //setItemList uses removeQuery to remove the selected item from the array of itemList
     setItemList(itemList.splice(removeQuery, 1));
+    console.log("useEffect");
   }, removeQuery);
 
   return (
