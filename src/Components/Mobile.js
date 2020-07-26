@@ -22,10 +22,10 @@ function Mobile() {
       },
     ]);
     //__PROBLEM__: my console log currently opting the existing initial item. itemList.length is 1 after the click, it should be 2 ??
-    console.log(
-      `item No:`,
-      itemList.map((item) => item.itemNo)
-    );
+    // console.log(
+    //   `item No:`,
+    //   itemList.map((item) => item.itemNo)
+    // );
     console.log("itemList ", itemList);
   }
 
@@ -34,7 +34,7 @@ function Mobile() {
   //__PROBLEM__: console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered only onClick of remove button ??
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
-    console.log("itemList: ", itemList);
+    // console.log("itemList: ", itemList);
     console.log("removequery", removeQuery);
   };
 

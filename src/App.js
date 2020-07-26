@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import MenuBar from "./Components/MenuBar";
 import Mobile from "./Components/Mobile";
 import "./App.css";
 
@@ -12,6 +13,7 @@ function App() {
   }, []);
   return (
     <div id="root">
+      <MenuBar />
       <Mobile />
     </div>
   );

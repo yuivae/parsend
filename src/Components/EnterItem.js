@@ -15,7 +15,9 @@ function EnterItem({ itemNo, totalCount, handleRemove }) {
             <p style={{ cursor: "pointer" }}>or select a folder</p>
           </div>
           <div className="item-counter">
-            {itemNo}/{totalCount}
+            <h2>
+              {itemNo}/{totalCount}
+            </h2>
           </div>
           <div className="remove-item" onClick={handleRemove}>
             <i className="fas fa-times"></i>
