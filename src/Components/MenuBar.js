@@ -8,12 +8,12 @@ function MenuBar() {
       </div>
       <div id="menu-middle">
         <li>
-          <a href="#">
+          <a href="/parsend">
             <h2>New Case</h2>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="/case-history">
             <h2>Case History</h2>
           </a>
         </li>
