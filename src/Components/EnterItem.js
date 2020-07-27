@@ -2,7 +2,10 @@ import React, { useState } from "react";
 
 function EnterItem({ itemNo, totalCount, handleRemove }) {
   let itemKey = itemNo - 1;
-  handleRemove(itemKey);
+  function removeHandler() {
+    console.log("index ", itemKey);
+    handleRemove(itemKey);
+  }
   return (
     <div className="item-content">
       <div className="item-container">
@@ -19,7 +22,7 @@ function EnterItem({ itemNo, totalCount, handleRemove }) {
               {itemNo}/{totalCount}
             </h2>
           </div>
-          <div className="remove-item" onClick={handleRemove}>
+          <div className="remove-item" onClick={removeHandler}>
             <i className="fas fa-times"></i>
           </div>
         </div>

@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import EnterItem from "./EnterItem";
 
 function Mobile() {
   //setting a dynamic caseID state for later use this will be edited by input
   const [caseID, setCaseID] = useState("#1924");
 
-  //setting an itemList state for the items in the case
+  //setting an itemList state for the items in the case, using an arrow function so the initial state gets to be set only onLoad
   const [itemList, setItemList] = useState([
     {
       itemNo: 1,
     },
   ]);
   //removeQuery will trigger useEffect and eventually handle removing selected items
-  const [removeQuery, setRemoveQuery] = useState();
+  const [removeQuery, setRemoveQuery] = useState(null);
 
   function addField() {
     setItemList([
@@ -21,29 +21,21 @@ function Mobile() {
         itemNo: itemList[itemList.length - 1].itemNo + 1,
       },
     ]);
-    //__PROBLEM__: my console log currently opting the existing initial item. itemList.length is 1 after the click, it should be 2 ??
-    // console.log(
-    //   `item No:`,
-    //   itemList.map((item) => item.itemNo)
-    // );
-    console.log("itemList ", itemList);
   }
+  useEffect(() => console.log("itemList: ", itemList), [itemList]);
 
   //removeHandler creates a removeKey and uses it to set removeQuery.
 
-  //__PROBLEM__: console.log in removeHandler gets triggered onclick of addField(), which shouldn't be the case. It should be triggered only onClick of remove button ??
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
-    // console.log("itemList: ", itemList);
-    console.log("removequery", removeQuery);
   };
 
-  //__PROBLEM__: useEffect won't get triggered by removeQuery ??
   useEffect(() => {
-    //setItemList uses removeQuery to remove the selected item from the array of itemList
-    setItemList(itemList.splice(removeQuery, 1));
-    console.log("useEffect triggered");
-  }, removeQuery);
+    //not possible to delete the first item
+    if (itemList.length > 1) {
+      setItemList(itemList.filter((item, index) => index !== removeQuery));
+    }
+  }, [removeQuery]);
 
   return (
     <div id="mobile">
