@@ -14,7 +14,12 @@ function MenuBar() {
         </li>
         <li>
           <a href="/case-history">
-            <h2>Case History</h2>
+            <h2>Your Cases</h2>
+          </a>
+        </li>
+        <li>
+          <a href="/document-types">
+            <h2>Document Types</h2>
           </a>
         </li>
       </div>

@@ -1,10 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-function EnterItem({ itemNo, totalCount, handleRemove }) {
+function EnterItem({
+  itemNo,
+  totalCount,
+  handleRemove,
+  description,
+  attachments,
+}) {
+  const descRef = useRef("");
+
+  //define remove selection and remove
   let itemKey = itemNo - 1;
   function removeHandler() {
-    console.log("index ", itemKey);
     handleRemove(itemKey);
+  }
+  function blurHandler() {
+    description({
+      desc: descRef.current.textContent,
+      itemNo: itemNo,
+    });
+    console.log("blur", descRef.current.textContent);
   }
   return (
     <div className="item-content">
@@ -27,8 +42,10 @@ function EnterItem({ itemNo, totalCount, handleRemove }) {
           </div>
         </div>
         <div
+          ref={descRef}
           className="description"
           data-placeholder="Description"
+          onBlur={blurHandler}
           contentEditable
         ></div>
       </div>
