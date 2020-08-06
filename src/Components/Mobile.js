@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import EnterItem from "./EnterItem";
+import EnterItem from "./EnterItem/EnterItem";
 
 function Mobile() {
   //setting a dynamic caseID state for later use this will be edited by input
@@ -83,6 +83,7 @@ function Mobile() {
             attachments={item.Attachments}
             totalCount={itemList.length}
             handleRemove={removeHandler}
+            key={index}
           />
         ))}
       </div>
