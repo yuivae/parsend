@@ -45,38 +45,46 @@ function EnterItem({
   return (
     <div className={progressColor}>
       <div className="item-container">
+        {attached.map((file, index) => (
+          <div className="attached">
+            <h3 key={index}>{file.name}</h3>
+            <h4 key={index}>
+              {file.size}-{file.type}
+            </h4>
+          </div>
+        ))}
         <div className="add-section">
           <button className="add-button">
-            <i className="fas fa-plus"></i>
+            <i class="fas fa-plus"></i>
           </button>
           <div className="add-text">
             <input
               id="upload-file"
               type="file"
               name="upload-file"
-              placeholder="select a folder"
               style={{ cursor: "pointer" }}
               multiple
               onChange={uploadHandler}
             />
+            <div
+              id="add-title"
+              data-placeholder="Add Title"
+              contentEditable
+            ></div>
             <label htmlFor="upload-file">
-              <h2>Add file</h2>
+              <p>Add file</p>
             </label>
           </div>
           <div className="item-counter">
             <h2>
-              {itemNo}/{totalCount}
+              •{itemNo}/{totalCount}
             </h2>
           </div>
           <div className="remove-item" onClick={removeHandler}>
-            <i className="fas fa-times"></i>
+            <h2 style={{ color: "#FD7422", fontSize: "14px" }}>remove</h2>
           </div>
         </div>
-        <div>
-          {attached.map((file, index) => (
-            <h2 key={index}>{file.name}</h2>
-          ))}
-        </div>
+
         <div
           ref={descRef}
           className="description"

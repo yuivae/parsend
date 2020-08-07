@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import EnterItem from "./EnterItem/EnterItem";
+import EnterItem from "../EnterItem/EnterItem";
+import "./CreateCase.css";
 
-function Mobile() {
+export default function CreateCase() {
   //setting a dynamic caseID state for later use this will be edited by input
   const [caseID, setCaseID] = useState("#1924");
   const [caseObject, setCaseObject] = useState({
@@ -87,15 +88,16 @@ function Mobile() {
           />
         ))}
       </div>
-      <div id="footer">
+      <div id="add-section">
         <button id="add-field" onClick={addField}>
           Add Field
         </button>
+      </div>
+      <div id="footer">
         <button id="submit" onClick={submitHandler}>
-          Submit
+          Create Case
         </button>
       </div>
     </div>
   );
 }
-export default Mobile;

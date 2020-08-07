@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import MenuBar from "./Components/MenuBar";
-import Mobile from "./Components/Mobile";
 import "./App.css";
 import { Router } from "react-router-dom";
 import Routes from "./routes/routes";
