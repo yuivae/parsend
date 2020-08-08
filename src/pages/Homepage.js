@@ -1,10 +1,11 @@
 import React from "react";
 
-import CreateCase from "../Components/CreateCase/CreateCase";
+import Home from "../Components/Home/Home";
+
 export default function Homepage() {
   return (
     <>
-      <CreateCase />
+      <Home />
     </>
   );
 }

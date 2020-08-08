@@ -1,16 +1,16 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import Homepage from "../pages/Homepage";
-import CaseHistory from "../pages/Case History";
-import DocumentTypes from "../pages/DocumentTypes";
+import CreateNew from "../pages/CreateNew";
 
 export default function Routes() {
   return (
-    <Switch>
-      <Route path="/parsend" exact component={Homepage}></Route>
-      <Route path="/case-history" exact component={CaseHistory}></Route>
-      <Route path="/document-types" exact component={DocumentTypes}></Route>
-    </Switch>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/homepage" exact component={Homepage}></Route>
+        <Route path="/create-new" exact component={CreateNew}></Route>
+      </Switch>
+    </BrowserRouter>
   );
 }

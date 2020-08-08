@@ -1,0 +1,21 @@
+:root {
+  --font: "Avenir";
+  --main-color: #fd7422;
+  --text-regular: #3a3a3a;
+  --text-light: #c2c2c2;
+  --border-color: #c2c2c260;
+  --shadow: 1px 1px 8px #3a3a3a46;
+  --brand-white: #fefefe;
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: auto;
+  margin-top: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--border-color);
+}
