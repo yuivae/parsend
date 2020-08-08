@@ -10,8 +10,8 @@ export default function CreateCase() {
     caseItems: [],
   });
 
-  //setting an itemList state for the items in the case, using an arrow function so the initial state gets to be set only onLoad
   const [description, setDescription] = useState({});
+  //setting an itemList state for the items in the case
   const [itemList, setItemList] = useState([
     {
       itemNo: 1,
@@ -27,33 +27,27 @@ export default function CreateCase() {
     setItemList([
       ...itemList,
       {
-        itemNo: itemList[itemList.length - 1].itemNo + 1,
         description: "",
         attachments: 0,
         completed: false,
       },
     ]);
   }
-  useEffect(() => console.log("itemList: ", itemList), [itemList]);
-  useEffect(() => console.log("caseObject: ", caseObject), [caseObject]);
   useEffect(() => {
-    console.log("description.itemno: ", description.itemNo);
-    // itemList.map((item) => console.log("itemlist: ", item.Description));
     let newList = itemList.map((item) => {
-      if (item.itemNo === description.itemNo) {
+      if (item.index === description.index) {
         return { ...item, description: description.desc };
       } else {
         return item;
       }
     });
-    // console.log(newList);
     setItemList(newList);
-    // console.log(newList.itemNo);
   }, [description]);
 
   //removeHandler creates a removeKey and uses it to set removeQuery.
 
   const removeHandler = (removeKey) => {
+    console.log("removekey", removeKey);
     setRemoveQuery(removeKey);
   };
   const getDescription = (descObj) => {
@@ -61,11 +55,15 @@ export default function CreateCase() {
   };
 
   useEffect(() => {
+    console.log("current Itemlist", itemList);
     //not possible to delete the first item
     if (itemList.length > 1) {
       setItemList(itemList.filter((item, index) => index !== removeQuery));
     }
+    //to keep removekey reset at each click I nullify the value here
+    setRemoveQuery(null);
   }, [removeQuery]);
+  useEffect(() => console.log("newItemList", itemList), [itemList]);
   function submitHandler() {
     setCaseObject({ ...caseObject, caseItems: itemList });
   }
@@ -79,7 +77,7 @@ export default function CreateCase() {
       <div id="middle">
         {itemList.map((item, index) => (
           <EnterItem
-            itemNo={index + 1}
+            itemIndex={index}
             description={getDescription}
             attachments={item.Attachments}
             totalCount={itemList.length}

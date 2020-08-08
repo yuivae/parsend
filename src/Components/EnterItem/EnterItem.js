@@ -2,54 +2,56 @@ import React, { useState, useRef, useEffect } from "react";
 import "./EnterItem.css";
 
 function EnterItem({
-  itemNo,
+  itemIndex,
   totalCount,
   handleRemove,
   description,
   attachments,
 }) {
   const descRef = useRef("");
-
+  const inputRef = useRef("");
   const [attached, setAttached] = useState([]);
   //porgressColor will define the complete/incomplete state of the item by color
   const [progressColor, setProgressColor] = useState("item-content");
+  const [inputId, setInputId] = useState(0);
 
+  useEffect(() => {
+    setInputId((prevState) => prevState + 1);
+  }, []);
+  useEffect(() => console.log("inputId", inputId), [inputId]);
   //define remove selection and remove
-  let itemKey = itemNo - 1;
   function removeHandler() {
-    handleRemove(itemKey);
+    handleRemove(itemIndex);
   }
   function blurHandler() {
     //onBlur; a.k.a when clicked outside the zone of description, the desc prop will be updated with the text input
     //later to be put in the case object upon submit.
     description({
       desc: descRef.current.textContent,
-      itemNo: itemNo,
+      itemIndex: itemIndex,
     });
-    console.log("blur", descRef.current.textContent);
   }
   function uploadHandler() {
-    const uploadFile = document.getElementById("upload-file");
+    console.log("inputref value ", inputRef.current.key);
+    const uploadFile = inputRef.current;
     if (uploadFile.files.length > 0) {
       //FileList is not an array, but it is iterable. We use spread op to get it as an array.
       setAttached([...uploadFile.files]);
       setProgressColor("item-content gray");
     }
-    console.log(uploadFile.files);
   }
   useEffect(() => {
     //here we assign the uploaded files into the attachments property, later to be put in the case object upon submit.
     attachments = [...attached];
-    console.log("attachments", attachments);
   }, [attached]);
   return (
     <div className={progressColor}>
       <div className="item-container">
         {attached.map((file, index) => (
-          <div className="attached">
-            <h3 key={index}>{file.name}</h3>
-            <h4 key={index}>
-              {file.size}-{file.type}
+          <div key={index} className="attached">
+            <h3 key={index + 1}>{file.name}</h3>
+            <h4 key={index + 2}>
+              {(file.size / 1000).toFixed(2)}mb - {file.type.split("/")[1]}
             </h4>
           </div>
         ))}
@@ -59,9 +61,10 @@ function EnterItem({
           </button>
           <div className="add-text">
             <input
-              id="upload-file"
+              ref={inputRef}
+              id={itemIndex}
+              className="upload-file"
               type="file"
-              name="upload-file"
               style={{ cursor: "pointer" }}
               multiple
               onChange={uploadHandler}
@@ -71,13 +74,13 @@ function EnterItem({
               data-placeholder="Add Title"
               contentEditable
             ></div>
-            <label htmlFor="upload-file">
+            <label htmlFor={itemIndex}>
               <p>Add file</p>
             </label>
           </div>
           <div className="item-counter">
             <h2>
-              •{itemNo}/{totalCount}
+              •{itemIndex + 1}/{totalCount}
             </h2>
           </div>
           <div className="remove-item" onClick={removeHandler}>
