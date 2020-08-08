@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import EnterItem from "../EnterItem/EnterItem";
 import "./CreateCase.css";
 
-export default function CreateCase({ caseItem }) {
+export default function CreateCase() {
   //setting a dynamic caseID state for later use this will be edited by input
   const [caseID, setCaseID] = useState("#1924");
   const [caseObject, setCaseObject] = useState({
@@ -68,7 +68,6 @@ export default function CreateCase({ caseItem }) {
   function submitHandler() {
     setCaseObject({ ...caseObject, caseItems: itemList });
   }
-  useEffect(() => (caseItem = caseObject), [caseObject]);
   return (
     <div id="mobile">
       <div id="header">
@@ -94,7 +93,7 @@ export default function CreateCase({ caseItem }) {
         </button>
       </div>
       <div id="footer">
-        <NavLink to="/homepage">return</NavLink>
+        <NavLink to="/parsend">return</NavLink>
         <button id="submit" onClick={submitHandler}>
           Create Case
         </button>

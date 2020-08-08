@@ -8,7 +8,7 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/homepage" exact component={Homepage}></Route>
+        <Route path="/parsend" exact component={Homepage}></Route>
         <Route path="/create-new" exact component={CreateNew}></Route>
       </Switch>
     </BrowserRouter>
