@@ -31,17 +31,6 @@
   font-weight: normal;
   cursor: pointer;
 }
-#footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  width: auto;
-  margin-top: 0;
-  padding: 20px 0;
-
-  border-top: 1px solid var(--border-color);
-}
 #submit {
   height: 60px;
   width: 200px;

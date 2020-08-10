@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, useHistory, useLocation } from "react-router-dom";
 import EnterItem from "../EnterItem/EnterItem";
 import "./CreateCase.css";
 
@@ -9,13 +9,20 @@ export default function CreateCase() {
   const [caseObject, setCaseObject] = useState({
     caseID: caseID,
     caseItems: [],
+    created: false,
   });
+  //useHistory hook needed to navigate onclick of a button and pass an object synchronously.
+  let history = useHistory();
+  //isMount is created to control the useEffect to render on mount.
+  let isMount = useRef(false);
+  const location = useLocation();
 
   const [description, setDescription] = useState({});
+  const [title, setTitle] = useState({});
   //setting an itemList state for the items in the case
   const [itemList, setItemList] = useState([
     {
-      itemNo: 1,
+      title: "",
       description: "",
       attachments: 0,
       completed: false,
@@ -28,6 +35,7 @@ export default function CreateCase() {
     setItemList([
       ...itemList,
       {
+        title: "",
         description: "",
         attachments: 0,
         completed: false,
@@ -35,24 +43,37 @@ export default function CreateCase() {
     ]);
   }
   useEffect(() => {
-    let newList = itemList.map((item) => {
-      if (item.index === description.index) {
+    let newList = itemList.map((item, index) => {
+      if (index === description.itemIndex) {
         return { ...item, description: description.desc };
       } else {
         return item;
       }
     });
+    console.log("desc triggered", newList);
     setItemList(newList);
   }, [description]);
+  useEffect(() => {
+    let newList = itemList.map((item, index) => {
+      if (index === title.itemIndex) {
+        return { ...item, title: title.title };
+      } else {
+        return item;
+      }
+    });
+    setItemList(newList);
+  }, [title]);
 
   //removeHandler creates a removeKey and uses it to set removeQuery.
 
   const removeHandler = (removeKey) => {
-    console.log("removekey", removeKey);
     setRemoveQuery(removeKey);
   };
   const getDescription = (descObj) => {
     setDescription(descObj);
+  };
+  const getTitle = (titleObj) => {
+    setTitle(titleObj);
   };
 
   useEffect(() => {
@@ -64,10 +85,24 @@ export default function CreateCase() {
     //to keep removekey reset at each click I nullify the value here
     setRemoveQuery(null);
   }, [removeQuery]);
-  useEffect(() => console.log("newItemList", itemList), [itemList]);
+
+  useEffect(() => {
+    console.log("itemlist", itemList);
+  }, [itemList]);
   function submitHandler() {
-    setCaseObject({ ...caseObject, caseItems: itemList });
+    setCaseObject({ ...caseObject, caseItems: itemList, created: true });
+    isMount.current = true;
   }
+  useEffect(() => {
+    // console.log("you're in", caseObject);
+
+    if (isMount.current) {
+      history.push({
+        pathname: "/parsend",
+        state: { object: caseObject, location: location.pathname },
+      });
+    }
+  }, [caseObject]);
   return (
     <div id="mobile">
       <div id="header">
@@ -79,6 +114,7 @@ export default function CreateCase() {
         {itemList.map((item, index) => (
           <EnterItem
             itemIndex={index}
+            title={getTitle}
             description={getDescription}
             attachments={item.Attachments}
             totalCount={itemList.length}
@@ -93,7 +129,7 @@ export default function CreateCase() {
         </button>
       </div>
       <div id="footer">
-        <NavLink to="/parsend">return</NavLink>
+        <NavLink to={{ pathname: "/parsend" }}>return</NavLink>
         <button id="submit" onClick={submitHandler}>
           Create Case
         </button>

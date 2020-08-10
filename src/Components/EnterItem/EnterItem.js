@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./EnterItem.css";
 
 function EnterItem({
+  title,
   itemIndex,
   totalCount,
   handleRemove,
@@ -9,16 +10,12 @@ function EnterItem({
   attachments,
 }) {
   const descRef = useRef("");
+  const titleRef = useRef("");
   const inputRef = useRef("");
   const [attached, setAttached] = useState([]);
   //porgressColor will define the complete/incomplete state of the item by color
   const [progressColor, setProgressColor] = useState("item-content");
-  const [inputId, setInputId] = useState(0);
 
-  useEffect(() => {
-    setInputId((prevState) => prevState + 1);
-  }, []);
-  useEffect(() => console.log("inputId", inputId), [inputId]);
   //define remove selection and remove
   function removeHandler() {
     handleRemove(itemIndex);
@@ -28,6 +25,10 @@ function EnterItem({
     //later to be put in the case object upon submit.
     description({
       desc: descRef.current.textContent,
+      itemIndex: itemIndex,
+    });
+    title({
+      title: titleRef.current.textContent,
       itemIndex: itemIndex,
     });
   }
@@ -57,7 +58,7 @@ function EnterItem({
         ))}
         <div className="add-section">
           <button className="add-button">
-            <i class="fas fa-plus"></i>
+            <i className="fas fa-plus"></i>
           </button>
           <div className="add-text">
             <input
@@ -70,8 +71,10 @@ function EnterItem({
               onChange={uploadHandler}
             />
             <div
+              ref={titleRef}
               id="add-title"
               data-placeholder="Add Title"
+              onBlur={blurHandler}
               contentEditable
             ></div>
             <label htmlFor={itemIndex}>

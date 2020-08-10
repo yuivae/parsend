@@ -117,6 +117,19 @@ p {
   height: 120px;
   background-color: var(--main-color);
 }
+#footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: auto;
+  padding: 20px 0;
+
+  border-top: 1px solid var(--border-color);
+}
+.down {
+  margin-top: auto;
+}
 #title {
   display: flex;
 }
