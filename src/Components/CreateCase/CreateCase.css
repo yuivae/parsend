@@ -48,3 +48,6 @@
   font-weight: 500;
   color: var(--brand-white);
 }
+.footer-create {
+  height: 100px;
+}

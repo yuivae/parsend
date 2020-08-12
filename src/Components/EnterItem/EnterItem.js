@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./EnterItem.css";
+import "./EnterItem.scss";
 
 function EnterItem({
   title,
@@ -41,45 +41,62 @@ function EnterItem({
       setProgressColor("item-content gray");
     }
   }
+  function removeAttached(event) {
+    // console.log("attachRef", attachRef.current.getAttribute("data-index"));
+    console.log("event.target", event.target.id);
+    if (attached.length > 1) {
+      let newList = attached.filter((item, index) => index != event.target.id);
+      // console.log("newlist", newList);
+      setAttached(newList);
+    } else {
+      setAttached([]);
+      setProgressColor("item-content");
+    }
+  }
   useEffect(() => {
     //here we assign the uploaded files into the attachments property, later to be put in the case object upon submit.
-    attachments = [...attached];
+    attachments({ attached: attached.length, itemIndex: itemIndex });
   }, [attached]);
   return (
     <div className={progressColor}>
       <div className="item-container">
         {attached.map((file, index) => (
-          <div key={index} className="attached">
-            <h3 key={index + 1}>{file.name}</h3>
+          <div data-index={index} key={index} className="attached">
+            <div className="remove-name">
+              <h3 key={index + 1}>{file.name}</h3>
+              <div
+                id="remove-attached"
+                className="remove-item"
+                onClick={removeAttached}
+              >
+                <h2 id={index}>remove</h2>
+              </div>
+            </div>
             <h4 key={index + 2}>
               {(file.size / 1000).toFixed(2)}mb - {file.type.split("/")[1]}
             </h4>
           </div>
         ))}
         <div className="add-section">
-          <button className="add-button">
-            <i className="fas fa-plus"></i>
-          </button>
-          <div className="add-text">
-            <input
-              ref={inputRef}
-              id={itemIndex}
-              className="upload-file"
-              type="file"
-              style={{ cursor: "pointer" }}
-              multiple
-              onChange={uploadHandler}
-            />
-            <div
-              ref={titleRef}
-              id="add-title"
-              data-placeholder="Add Title"
-              onBlur={blurHandler}
-              contentEditable
-            ></div>
+          <button type="button" className="add-button">
             <label htmlFor={itemIndex}>
-              <p>Add file</p>
+              <i className="fas fa-plus"></i>
             </label>
+          </button>
+          <input
+            ref={inputRef}
+            id={itemIndex}
+            className="upload-file"
+            type="file"
+            style={{ cursor: "pointer" }}
+            multiple
+            onChange={uploadHandler}
+          />
+          <div className="add-text">
+            <div id="add-title">
+              <div ref={titleRef} onBlur={blurHandler} contentEditable></div>
+              <h3 className="placeholder">Title</h3>
+            </div>
           </div>
           <div className="item-counter">
             <h2>
@@ -91,13 +108,15 @@ function EnterItem({
           </div>
         </div>
 
-        <div
-          ref={descRef}
-          className="description"
-          data-placeholder="Description"
-          onBlur={blurHandler}
-          contentEditable
-        ></div>
+        <div className="description">
+          <div
+            ref={descRef}
+            id="description"
+            onBlur={blurHandler}
+            contentEditable
+          ></div>
+          <h3>Description</h3>
+        </div>
       </div>
     </div>
   );

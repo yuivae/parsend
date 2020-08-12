@@ -1,0 +1,144 @@
+@import "../../variables.scss";
+
+.item-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  border-bottom: 1px solid $border-color;
+  overflow: auto;
+}
+.item-counter {
+  position: absolute;
+  top: 10px;
+  right: 0;
+}
+.item-container {
+  position: relative;
+  margin: 15px;
+}
+.add-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  padding-top: 40px;
+
+  border-bottom: 1px solid $border-color;
+}
+.add-button {
+  width: 34px;
+  height: 34px;
+  margin: 0 8px;
+
+  border-radius: 50px;
+  border: none;
+  box-shadow: $shadow;
+  background-color: $main-color;
+  cursor: pointer;
+}
+.add-text {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+}
+#add-title {
+  position: relative;
+  width: 170px;
+  height: 40px;
+  cursor: text;
+  border: 1px solid $border-color;
+  border-radius: 5px;
+  h3 {
+    position: absolute;
+    top: 0;
+    transform: translateY(50%);
+    margin: 0 10px;
+    outline: none;
+    border: none;
+    background-color: white;
+    color: $text-light;
+    transition: all 300ms ease-in-out;
+    pointer-events: none;
+  }
+  div {
+    outline: none;
+    padding: 10px;
+    &:focus + h3 {
+      margin-top: -9px;
+      transform: scale(0.9);
+    }
+    &:not(:empty) + h3 {
+      margin-top: -9px;
+      transform: scale(0.9);
+    }
+  }
+}
+
+.remove-item {
+  margin: 10px;
+  padding: 2px 5px;
+
+  border: 1px solid $main-color;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.remove-name {
+  display: flex;
+  align-items: center;
+}
+#remove-attached {
+  margin-left: auto;
+  border-color: $border-color;
+}
+#remove-attached > h2 {
+  font-size: 14px;
+}
+.description {
+  position: relative;
+  width: auto;
+  height: auto;
+  min-height: 60px;
+  div {
+    min-height: 60px;
+    width: auto;
+    height: auto;
+    border: none;
+    padding: 10px;
+    vertical-align: text-top;
+    outline: none;
+  }
+  h3 {
+    position: absolute;
+    pointer-events: none;
+    top: 15%;
+    margin: 10px;
+    color: $text-light;
+    background-color: white;
+    transition: all 400ms ease-in-out;
+  }
+  div:focus + h3 {
+    margin-top: -22px;
+    transform: scale(0.9);
+  }
+  div:not(:empty) + h3 {
+    margin-top: -22px;
+    transform: scale(0.9);
+  }
+}
+
+.upload-file {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+.gray {
+  background-color: #f8f8f8;
+}
+
+.attached {
+  border-bottom: 1px solid $border-color;
+}

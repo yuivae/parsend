@@ -9,6 +9,7 @@ export default function CreateCase() {
   const [caseObject, setCaseObject] = useState({
     caseID: caseID,
     caseItems: [],
+    attachments: 0,
     created: false,
   });
   //useHistory hook needed to navigate onclick of a button and pass an object synchronously.
@@ -19,6 +20,7 @@ export default function CreateCase() {
 
   const [description, setDescription] = useState({});
   const [title, setTitle] = useState({});
+  const [attached, setAttached] = useState({});
   //setting an itemList state for the items in the case
   const [itemList, setItemList] = useState([
     {
@@ -42,6 +44,10 @@ export default function CreateCase() {
       },
     ]);
   }
+  //GET DESCRIPTION from component and update state
+  const getDescription = (descObj) => {
+    setDescription(descObj);
+  };
   useEffect(() => {
     let newList = itemList.map((item, index) => {
       if (index === description.itemIndex) {
@@ -53,6 +59,12 @@ export default function CreateCase() {
     console.log("desc triggered", newList);
     setItemList(newList);
   }, [description]);
+
+  //GET TITLE from component and update state
+
+  const getTitle = (titleObj) => {
+    setTitle(titleObj);
+  };
   useEffect(() => {
     let newList = itemList.map((item, index) => {
       if (index === title.itemIndex) {
@@ -64,16 +76,27 @@ export default function CreateCase() {
     setItemList(newList);
   }, [title]);
 
+  //GET ATTACHMENTS from component and update state
+
+  const getAttached = (attached) => {
+    setAttached(attached);
+  };
+  useEffect(() => {
+    let newList = itemList.map((item, index) => {
+      if (index === attached.itemIndex) {
+        return { ...item, attachments: attached.attached };
+      } else {
+        return item;
+      }
+    });
+    console.log("attached", newList);
+    setItemList(newList);
+  }, [attached]);
+
   //removeHandler creates a removeKey and uses it to set removeQuery.
 
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
-  };
-  const getDescription = (descObj) => {
-    setDescription(descObj);
-  };
-  const getTitle = (titleObj) => {
-    setTitle(titleObj);
   };
 
   useEffect(() => {
@@ -90,7 +113,14 @@ export default function CreateCase() {
     console.log("itemlist", itemList);
   }, [itemList]);
   function submitHandler() {
-    setCaseObject({ ...caseObject, caseItems: itemList, created: true });
+    let total = itemList.reduce((total, item) => total + item.attachments, 0);
+    console.log("total", total);
+    setCaseObject({
+      ...caseObject,
+      caseItems: itemList,
+      created: true,
+      attachments: total,
+    });
     isMount.current = true;
   }
   useEffect(() => {
@@ -116,7 +146,7 @@ export default function CreateCase() {
             itemIndex={index}
             title={getTitle}
             description={getDescription}
-            attachments={item.Attachments}
+            attachments={getAttached}
             totalCount={itemList.length}
             handleRemove={removeHandler}
             key={index}
@@ -128,7 +158,7 @@ export default function CreateCase() {
           Add Field
         </button>
       </div>
-      <div id="footer">
+      <div id="footer" className="footer-create">
         <NavLink to={{ pathname: "/parsend" }}>return</NavLink>
         <button id="submit" onClick={submitHandler}>
           Create Case

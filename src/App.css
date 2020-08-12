@@ -6,16 +6,6 @@
   --shadow: 1px 1px 8px #3a3a3a46;
   --brand-white: #fefefe;
 }
-[contenteditable] {
-  padding: 6px;
-  /* margin: 6px; */
-}
-[data-placeholder]:empty:before {
-  content: attr(data-placeholder);
-  color: #888;
-  font-style: italic;
-  font-family: var(--font);
-}
 .fa-times {
   color: var(--main-color);
   /* font-size: small; */
@@ -121,7 +111,6 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100px;
   width: auto;
   padding: 20px 0;
 
