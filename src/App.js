@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./App.css";
+import "./App.scss";
 import { Router } from "react-router-dom";
 import Routes from "./routes/routes";
 import history from "./services/history";

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "./Home.scss";
+// import "../../App.scss";
 
 export default function Home(props) {
   // const location = useLocation();
@@ -23,7 +24,7 @@ export default function Home(props) {
   // let display = [];
   return (
     <div id="mobile">
-      <div id="header">
+      <div id="header" className="primary">
         <div id="title">
           <h1>Case List</h1>
         </div>

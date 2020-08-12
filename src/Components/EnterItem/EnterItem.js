@@ -13,8 +13,8 @@ function EnterItem({
   const titleRef = useRef("");
   const inputRef = useRef("");
   const [attached, setAttached] = useState([]);
-  //porgressColor will define the complete/incomplete state of the item by color
-  const [progressColor, setProgressColor] = useState("item-content");
+  //porgressColor will define the set/unset state of the items by color
+  const [progressColor, setProgressColor] = useState("unset");
 
   //define remove selection and remove
   function removeHandler() {
@@ -38,7 +38,7 @@ function EnterItem({
     if (uploadFile.files.length > 0) {
       //FileList is not an array, but it is iterable. We use spread op to get it as an array.
       setAttached([...uploadFile.files]);
-      setProgressColor("item-content gray");
+      setProgressColor("set");
     }
   }
   function removeAttached(event) {
@@ -50,7 +50,7 @@ function EnterItem({
       setAttached(newList);
     } else {
       setAttached([]);
-      setProgressColor("item-content");
+      setProgressColor("unset");
     }
   }
   useEffect(() => {
@@ -58,7 +58,7 @@ function EnterItem({
     attachments({ attached: attached.length, itemIndex: itemIndex });
   }, [attached]);
   return (
-    <div className={progressColor}>
+    <div className={`item-content ${progressColor}`}>
       <div className="item-container">
         {attached.map((file, index) => (
           <div data-index={index} key={index} className="attached">
@@ -78,11 +78,12 @@ function EnterItem({
           </div>
         ))}
         <div className="add-section">
-          <button type="button" className="add-button">
-            <label htmlFor={itemIndex}>
+          <label htmlFor={itemIndex}>
+            <div className="add-button">
               <i className="fas fa-plus"></i>
-            </label>
-          </button>
+            </div>
+          </label>
+
           <input
             ref={inputRef}
             id={itemIndex}
@@ -95,7 +96,7 @@ function EnterItem({
           <div className="add-text">
             <div id="add-title">
               <div ref={titleRef} onBlur={blurHandler} contentEditable></div>
-              <h3 className="placeholder">Title</h3>
+              <h3 className={progressColor}>Title</h3>
             </div>
           </div>
           <div className="item-counter">
@@ -115,7 +116,7 @@ function EnterItem({
             onBlur={blurHandler}
             contentEditable
           ></div>
-          <h3>Description</h3>
+          <h3 className={progressColor}>Description</h3>
         </div>
       </div>
     </div>

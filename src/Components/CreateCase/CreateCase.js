@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useHistory, useLocation } from "react-router-dom";
 import EnterItem from "../EnterItem/EnterItem";
-import "./CreateCase.css";
+import "./CreateCase.scss";
 
 export default function CreateCase() {
   //setting a dynamic caseID state for later use this will be edited by input
@@ -135,7 +135,7 @@ export default function CreateCase() {
   }, [caseObject]);
   return (
     <div id="mobile">
-      <div id="header">
+      <div id="header" className="primary">
         <div id="title">
           <h1>Case ID {caseID}</h1>
         </div>
@@ -159,8 +159,10 @@ export default function CreateCase() {
         </button>
       </div>
       <div id="footer" className="footer-create">
-        <NavLink to={{ pathname: "/parsend" }}>return</NavLink>
-        <button id="submit" onClick={submitHandler}>
+        <button className="button secondary" onClick={() => history.goBack()}>
+          Return
+        </button>
+        <button className="button primary" onClick={submitHandler}>
           Create Case
         </button>
       </div>

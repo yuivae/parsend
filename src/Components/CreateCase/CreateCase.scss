@@ -1,0 +1,50 @@
+@import "../../variables.scss";
+
+#add-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 5px 0;
+  border-top: 1px solid $border-color;
+}
+#add-field {
+  margin: 0 10px;
+  padding: 5px 15px;
+
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  background-color: $brand-white;
+  color: $main-color;
+  font-family: $font;
+  font-size: 21px;
+  font-weight: normal;
+  cursor: pointer;
+}
+.button {
+  height: 60px;
+  width: 200px;
+  margin: 0 10px;
+
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  box-shadow: $shadow;
+  cursor: pointer;
+
+  font-family: $font;
+  font-size: 21px;
+  font-weight: 500;
+}
+.footer-create {
+  height: 100px;
+}
+// .primary {
+//   color: $brand-white;
+//   background-color: $main-color;
+// }
+// .secondary {
+//   color: $main-color;
+//   background-color: $brand-white;
+// }
