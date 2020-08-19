@@ -4,15 +4,27 @@ import EnterItem from "../EnterItem/EnterItem";
 import "./CreateCase.scss";
 
 export default function CreateCase() {
-  //setting a dynamic caseID state for later use this will be edited by input
-  const [caseID, setCaseID] = useState("1924");
-  const [caseObject, setCaseObject] = useState();
-  //useHistory hook needed to navigate onclick of a button and pass an object synchronously.
-  let history = useHistory();
+  //INITIAL DECLARATION                                      ////////////////////////////////////
+
   //storage is to upload every new caseObject to localStorage
   let storage = localStorage.getItem("caseObject")
     ? JSON.parse(localStorage.getItem("caseObject"))
     : [];
+  let existingIDs = localStorage.getItem("caseIDs")
+    ? JSON.parse(localStorage.getItem("caseIDs"))
+    : [];
+  //setting a dynamic caseID state for later use this will be edited by input
+  const [caseID, setCaseID] = useState(() => {
+    if (existingIDs.length > 0) {
+      return existingIDs[existingIDs.length - 1] + 1;
+    } else {
+      return 1;
+    }
+  });
+  const [caseObject, setCaseObject] = useState();
+  //useHistory hook needed to navigate onclick of a button and pass an object synchronously.
+  let history = useHistory();
+
   //control is created to control on mount to rendering.
   const control = useRef(false);
 
@@ -31,6 +43,8 @@ export default function CreateCase() {
   //removeQuery will trigger useEffect and eventually handle removing selected items
   const [removeQuery, setRemoveQuery] = useState(null);
 
+  //ADDING SECTION                                      ////////////////////////////////////
+
   function addField() {
     setItemList([
       ...itemList,
@@ -42,6 +56,9 @@ export default function CreateCase() {
       },
     ]);
   }
+
+  //UPDATING SECTION                                      ////////////////////////////////////
+
   //GET DESCRIPTION from component and update state
   const getDescription = (descObj) => {
     setDescription(descObj);
@@ -91,7 +108,7 @@ export default function CreateCase() {
     setItemList(newList);
   }, [attached]);
 
-  //removeHandler creates a removeKey and uses it to set removeQuery.
+  //REMOVING SECTION                                      ////////////////////////////////////
 
   const removeHandler = (removeKey) => {
     setRemoveQuery(removeKey);
@@ -103,32 +120,39 @@ export default function CreateCase() {
     if (itemList.length > 1) {
       setItemList(itemList.filter((item, index) => index !== removeQuery));
     }
-    //to keep removekey reset at each click I nullify the value here
+    //to reset removekey at each click I nullify the value here
     setRemoveQuery(null);
   }, [removeQuery]);
 
-  useEffect(() => {
-    console.log("itemlist", itemList);
-  }, [itemList]);
+  //SUBMIT SECTION                                      ////////////////////////////////////
+
   function submitHandler() {
-    let total = itemList.reduce((total, item) => total + item.attachments, 0);
-    control.current = true;
-    setCaseObject({
-      caseID: caseID,
-      caseItems: itemList,
-      created: true,
-      attachments: total,
-    });
+    if (existingIDs.find((id) => id === caseID)) {
+      alert(`CaseID ${caseID} already exists`);
+    } else {
+      let total = itemList.reduce((total, item) => total + item.attachments, 0);
+      control.current = true;
+      setCaseObject({
+        caseID: caseID,
+        caseItems: itemList,
+        created: true,
+        attachments: total,
+      });
+    }
   }
   useEffect(() => {
     if (control.current) {
       storage = [...storage, caseObject];
       localStorage.setItem("caseObject", JSON.stringify(storage));
+
+      existingIDs = [...existingIDs, caseID];
+      localStorage.setItem("caseIDs", JSON.stringify(existingIDs));
       history.push({
         pathname: "/parsend",
       });
     }
   }, [caseObject]);
+
   return (
     <div id="mobile">
       <div id="header" className="primary">
