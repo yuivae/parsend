@@ -1,27 +1,45 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import "./Home.scss";
 // import "../../App.scss";
 
-export default function Home(props) {
-  // const location = useLocation();
+export default function Home() {
+  const [objectList, setObjectList] = useState(() => {
+    const storage = localStorage.getItem("caseObject");
+    return storage ? JSON.parse(storage) : [];
+  });
+  const history = useHistory();
 
-  const [objectList, setObjectList] = useState({});
-  console.log("props.location", props.location);
-  // console.log("location.state", props.location.state);
-  useEffect(() => {
-    if (props.location.state) {
-      setObjectList(props.location.state.object);
-    }
+  let itemDisplay = [];
+  if (objectList.length > 0) {
+    itemDisplay = objectList.map((object, index) => (
+      <div key={index} className="list-item">
+        <div className="item-container">
+          <div
+            id="item-icon"
+            onClick={() =>
+              history.push({
+                pathname: "/edit-case",
+                state: objectList[index],
+              })
+            }
+          >
+            <i className="fas fa-pen"></i>
+          </div>
+          <div className="item-text">
+            <h3>{object.caseID}</h3>
+            <h4>
+              {object.caseItems.length} Items, {object.caseItems.attachments}
+              Attachments
+            </h4>
+            <h4>Date Created 14/02/2020</h4>
+          </div>
+          <h2>•1/1</h2>
+        </div>
+      </div>
+    ));
+  }
 
-    // let display = objectList.map((obj) => console.log("you're in"));
-  }, []);
-  useEffect(() => {
-    console.log("objectList", objectList);
-  }, [objectList]);
-
-  // let display = Array.isArray(objectList.caseItems) ? objectList : [];
-  // let display = [];
   return (
     <div id="mobile">
       <div id="header" className="primary">
@@ -29,41 +47,32 @@ export default function Home(props) {
           <h1>Case List</h1>
         </div>
       </div>
-      <div id="middle">
-        <div key="index" className="list-item">
-          <div className="item-container">
-            <div id="item-icon">
-              <i class="fas fa-pen"></i>
-            </div>
-            <div className="item-text">
-              <h3>{objectList.caseID}</h3>
-              <h4>Attachments: {objectList.attachments}</h4>
-            </div>
-            <h2>•1/1</h2>
-          </div>
-        </div>
-      </div>
+      <div id="middle">{itemDisplay}</div>
       <div id="footer" className="down footer-home">
-        <NavLink to="/create-new">
-          <div className="navbar-option">
+        <div className="navbar-option">
+          <NavLink to="/create-new">
             <i className="fas fa-folder-plus"></i>
-          </div>
-        </NavLink>
-        <NavLink to="/parsend">
-          <div className="navbar-option">
+            <h3>Create</h3>
+          </NavLink>
+        </div>
+        <div className="navbar-option">
+          <NavLink to="/parsend">
             <i className="fas fa-list"></i>
-          </div>
-        </NavLink>
-        <NavLink to="/parsend">
-          <div className="navbar-option">
-            <i className="far fa-calendar-alt"></i>
-          </div>
-        </NavLink>
-        <NavLink to="/parsend">
-          <div className="navbar-option">
+            <h3>Cases</h3>
+          </NavLink>
+        </div>
+        <div className="navbar-option">
+          <NavLink to="/parsend">
+            <i className="fas fa-calendar-alt"></i>
+            <h3>Calendar</h3>
+          </NavLink>
+        </div>
+        <div className="navbar-option">
+          <NavLink to="/parsend">
             <i className="fas fa-user"></i>
-          </div>
-        </NavLink>
+            <h3>Profile</h3>
+          </NavLink>
+        </div>
       </div>
     </div>
   );

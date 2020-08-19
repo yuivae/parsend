@@ -5,18 +5,16 @@ import "./CreateCase.scss";
 
 export default function CreateCase() {
   //setting a dynamic caseID state for later use this will be edited by input
-  const [caseID, setCaseID] = useState("#1924");
-  const [caseObject, setCaseObject] = useState({
-    caseID: caseID,
-    caseItems: [],
-    attachments: 0,
-    created: false,
-  });
+  const [caseID, setCaseID] = useState("1924");
+  const [caseObject, setCaseObject] = useState();
   //useHistory hook needed to navigate onclick of a button and pass an object synchronously.
   let history = useHistory();
-  //isMount is created to control the useEffect to render on mount.
-  let isMount = useRef(false);
-  const location = useLocation();
+  //storage is to upload every new caseObject to localStorage
+  let storage = localStorage.getItem("caseObject")
+    ? JSON.parse(localStorage.getItem("caseObject"))
+    : [];
+  //control is created to control on mount to rendering.
+  const control = useRef(false);
 
   const [description, setDescription] = useState({});
   const [title, setTitle] = useState({});
@@ -114,22 +112,20 @@ export default function CreateCase() {
   }, [itemList]);
   function submitHandler() {
     let total = itemList.reduce((total, item) => total + item.attachments, 0);
-    console.log("total", total);
+    control.current = true;
     setCaseObject({
-      ...caseObject,
+      caseID: caseID,
       caseItems: itemList,
       created: true,
       attachments: total,
     });
-    isMount.current = true;
   }
   useEffect(() => {
-    // console.log("you're in", caseObject);
-
-    if (isMount.current) {
+    if (control.current) {
+      storage = [...storage, caseObject];
+      localStorage.setItem("caseObject", JSON.stringify(storage));
       history.push({
         pathname: "/parsend",
-        state: { object: caseObject, location: location.pathname },
       });
     }
   }, [caseObject]);
