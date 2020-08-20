@@ -7,15 +7,20 @@ export default function EditCase() {
   const location = useLocation();
   const history = useHistory();
 
-  const [object, setObject] = useState(location.state);
-  const [itemList, setItemList] = useState(object.caseItems);
+  let storedObject = JSON.parse(localStorage.getItem("caseObject")).find(
+    (item) => item.caseID === location.state.caseID
+  );
+  console.log("stored object", storedObject);
+  console.log("storedTitle", storedObject.caseItems[0].title);
+
+  const [editObject, setObject] = useState(storedObject);
+  const [itemList, setItemList] = useState(storedObject.caseItems);
 
   const [title, setTitle] = useState({});
   const [description, setDescription] = useState({});
   const [attached, setAttached] = useState({});
 
-  console.log("location", location);
-  console.log("object", object);
+  useEffect(() => console.log("itemlist", storedObject.caseItems), [itemList]);
 
   //GET DESCRIPTION from component and update state
   const getDescription = (descObj) => {
@@ -79,11 +84,11 @@ export default function EditCase() {
     <div id="mobile">
       <div id="header" className="primary">
         <div id="title">
-          <h1>Case ID {object.caseID}</h1>
+          <h1>Case ID {editObject.caseID}</h1>
         </div>
       </div>
       <div id="middle">
-        {object.caseItems.map((item, index) => (
+        {editObject.caseItems.map((item, index) => (
           <EnterItem
             itemIndex={index}
             title={getTitle}
@@ -91,6 +96,11 @@ export default function EditCase() {
             attachments={getAttached}
             totalCount={itemList.length}
             handleRemove={removeHandler}
+            editValues={{
+              description: storedObject.caseItems[index].description,
+              title: storedObject.caseItems[index].title,
+              attachments: storedObject.caseItems[index].attachments,
+            }}
             key={index}
           />
         ))}

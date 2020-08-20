@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import "./Home.scss";
-// import "../../App.scss";
 
 export default function Home() {
   const [objectList, setObjectList] = useState(() => {
@@ -9,7 +8,7 @@ export default function Home() {
     return storage ? JSON.parse(storage) : [];
   });
   const history = useHistory();
-
+  useEffect(() => console.log("objeclist", objectList), [objectList]);
   let itemDisplay = [];
   if (objectList.length > 0) {
     itemDisplay = objectList.map((object, index) => (
@@ -29,7 +28,7 @@ export default function Home() {
           <div className="item-text">
             <h3>{object.caseID}</h3>
             <h4>
-              {object.caseItems.length} Items, {object.caseItems.attachments}
+              {object.caseItems.length} Items, {object.attachments}
               Attachments
             </h4>
             <h4>Date Created 14/02/2020</h4>

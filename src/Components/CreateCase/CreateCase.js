@@ -36,7 +36,7 @@ export default function CreateCase() {
     {
       title: "",
       description: "",
-      attachments: 0,
+      attachments: [],
       completed: false,
     },
   ]);
@@ -51,7 +51,7 @@ export default function CreateCase() {
       {
         title: "",
         description: "",
-        attachments: 0,
+        attachments: [],
         completed: false,
       },
     ]);
@@ -64,7 +64,7 @@ export default function CreateCase() {
     setDescription(descObj);
   };
   useEffect(() => {
-    let newList = itemList.map((item, index) => {
+    const newList = itemList.map((item, index) => {
       if (index === description.itemIndex) {
         return { ...item, description: description.desc };
       } else {
@@ -75,13 +75,15 @@ export default function CreateCase() {
     setItemList(newList);
   }, [description]);
 
+  useEffect(() => console.log("itemlist", itemList), [itemList]);
+
   //GET TITLE from component and update state
 
   const getTitle = (titleObj) => {
     setTitle(titleObj);
   };
   useEffect(() => {
-    let newList = itemList.map((item, index) => {
+    const newList = itemList.map((item, index) => {
       if (index === title.itemIndex) {
         return { ...item, title: title.title };
       } else {
@@ -97,14 +99,18 @@ export default function CreateCase() {
     setAttached(attached);
   };
   useEffect(() => {
-    let newList = itemList.map((item, index) => {
+    const newList = itemList.map((item, index) => {
       if (index === attached.itemIndex) {
-        return { ...item, attachments: attached.attached };
+        //FILES API is not an existing array but it is a directory to the file. Here I create a new array of objects with needed props.
+        const array = Array.from(attached.attached).map((item) => {
+          return { name: item.name, size: item.size, type: item.type };
+        });
+        return { ...item, attachments: array };
       } else {
         return item;
       }
     });
-    console.log("attached", newList);
+
     setItemList(newList);
   }, [attached]);
 
@@ -130,7 +136,17 @@ export default function CreateCase() {
     if (existingIDs.find((id) => id === caseID)) {
       alert(`CaseID ${caseID} already exists`);
     } else {
-      let total = itemList.reduce((total, item) => total + item.attachments, 0);
+      //calculating total attachments in caseObject using reduce
+      let total;
+      if (itemList.length > 1) {
+        total = itemList.reduce(
+          (acc, val) => acc.attachments.length + val.attachments.length
+        );
+      } else {
+        total = itemList[0].attachments.length;
+      }
+      //setting caseObject with final values
+      console.log("final itemlist", itemList);
       control.current = true;
       setCaseObject({
         caseID: caseID,
@@ -141,6 +157,7 @@ export default function CreateCase() {
     }
   }
   useEffect(() => {
+    console.log("caseObject", caseObject);
     if (control.current) {
       storage = [...storage, caseObject];
       localStorage.setItem("caseObject", JSON.stringify(storage));

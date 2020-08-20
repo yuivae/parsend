@@ -53,6 +53,7 @@ button label {
 #add-title {
   position: relative;
   width: 170px;
+
   height: 40px;
   cursor: text;
   border: 1px solid $border-color;
@@ -81,7 +82,10 @@ button label {
     }
   }
 }
-
+.move-placeholder {
+  margin-top: -9px;
+  transform: scale(0.9);
+}
 .remove-item {
   margin: 10px;
   padding: 2px 5px;

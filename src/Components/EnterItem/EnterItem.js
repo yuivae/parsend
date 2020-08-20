@@ -8,32 +8,66 @@ function EnterItem({
   handleRemove,
   description,
   attachments,
+  editValues,
 }) {
+  //INITIAL SECTION                                      ////////////////////////////////////
+
+  //References used to fetch input values
   const descRef = useRef("");
   const titleRef = useRef("");
   const inputRef = useRef("");
-  const [attached, setAttached] = useState([]);
+
   //porgressColor will define the set/unset state of the items by color
   const [progressColor, setProgressColor] = useState("unset");
+
+  //this component is present in multiple parents. These definitions are to separate the edit and create functionalities of this component.
+  let editTitle = "";
+  let editDescription = "";
+  let editAttachments = [];
+  if (editValues) {
+    editTitle = editValues.title ? editValues.title : "";
+    editDescription = editValues.description ? editValues.description : "";
+    editAttachments = editValues.attachments ? editValues.attachments : [];
+  }
+  console.log("editattachments", editValues.attachments);
+
+  const [attached, setAttached] = useState(editAttachments);
+  //REMOVE SECTION                                      ////////////////////////////////////
 
   //define remove selection and remove
   function removeHandler() {
     handleRemove(itemIndex);
   }
-  function blurHandler() {
+  function removeAttached(event) {
+    console.log("event.target", event.target.id);
+    if (attached.length > 1) {
+      let newList = attached.filter((item, index) => index != event.target.id);
+      setAttached(newList);
+    } else {
+      setAttached([]);
+      setProgressColor("unset");
+    }
+  }
+
+  //UPDATE SECTION                                      ////////////////////////////////////
+
+  function blurHandler(event) {
     //onBlur; a.k.a when clicked outside the zone of description, the desc prop will be updated with the text input
     //later to be put in the case object upon submit.
-    description({
-      desc: descRef.current.textContent,
-      itemIndex: itemIndex,
-    });
-    title({
-      title: titleRef.current.textContent,
-      itemIndex: itemIndex,
-    });
+    if (event.target.id === "description-input") {
+      description({
+        desc: descRef.current.textContent,
+        itemIndex: itemIndex,
+      });
+    } else if (event.target.id === "title-input") {
+      title({
+        title: titleRef.current.textContent,
+        itemIndex: itemIndex,
+      });
+    }
   }
+
   function uploadHandler() {
-    console.log("inputref value ", inputRef.current.key);
     const uploadFile = inputRef.current;
     if (uploadFile.files.length > 0) {
       //FileList is not an array, but it is iterable. We use spread op to get it as an array.
@@ -41,22 +75,13 @@ function EnterItem({
       setProgressColor("set");
     }
   }
-  function removeAttached(event) {
-    // console.log("attachRef", attachRef.current.getAttribute("data-index"));
-    console.log("event.target", event.target.id);
-    if (attached.length > 1) {
-      let newList = attached.filter((item, index) => index != event.target.id);
-      // console.log("newlist", newList);
-      setAttached(newList);
-    } else {
-      setAttached([]);
-      setProgressColor("unset");
-    }
-  }
+
   useEffect(() => {
+    console.log("attached", attached);
     //here we assign the uploaded files into the attachments property, later to be put in the case object upon submit.
-    attachments({ attached: attached.length, itemIndex: itemIndex });
+    attachments({ attached: attached, itemIndex: itemIndex });
   }, [attached]);
+
   return (
     <div className={`item-content ${progressColor}`}>
       <div className="item-container">
@@ -95,7 +120,15 @@ function EnterItem({
           />
           <div className="add-text">
             <div id="add-title">
-              <div ref={titleRef} onBlur={blurHandler} contentEditable></div>
+              <div
+                id="title-input"
+                ref={titleRef}
+                onBlur={blurHandler}
+                contentEditable
+                suppressContentEditableWarning={true}
+              >
+                {editTitle}
+              </div>
               <h3 className={progressColor}>Title</h3>
             </div>
           </div>
@@ -112,10 +145,13 @@ function EnterItem({
         <div className="description">
           <div
             ref={descRef}
-            id="description"
+            id="description-input"
             onBlur={blurHandler}
             contentEditable
-          ></div>
+            suppressContentEditableWarning={true}
+          >
+            {editDescription}
+          </div>
           <h3 className={progressColor}>Description</h3>
         </div>
       </div>
