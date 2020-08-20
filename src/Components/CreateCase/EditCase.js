@@ -6,21 +6,21 @@ import EnterItem from "../EnterItem/EnterItem";
 export default function EditCase() {
   const location = useLocation();
   const history = useHistory();
-
+  let storage = JSON.parse(localStorage.getItem("caseObject"));
   let storedObject = JSON.parse(localStorage.getItem("caseObject")).find(
     (item) => item.caseID === location.state.caseID
   );
   console.log("stored object", storedObject);
   console.log("storedTitle", storedObject.caseItems[0].title);
 
-  const [editObject, setObject] = useState(storedObject);
+  const [editObject, setEditObject] = useState(storedObject);
   const [itemList, setItemList] = useState(storedObject.caseItems);
 
   const [title, setTitle] = useState({});
   const [description, setDescription] = useState({});
   const [attached, setAttached] = useState({});
 
-  useEffect(() => console.log("itemlist", storedObject.caseItems), [itemList]);
+  //UPDATE SECTION                                      ////////////////////////////////////
 
   //GET DESCRIPTION from component and update state
   const getDescription = (descObj) => {
@@ -70,16 +70,55 @@ export default function EditCase() {
     setItemList(newList);
   }, [attached]);
 
-  function submitHandler() {
-    console.log("submit handled");
-  }
+  //ADD SECTION                                      ////////////////////////////////////
 
   function addField() {
+    setItemList([
+      ...itemList,
+      {
+        title: "",
+        description: "",
+        attachments: [],
+        completed: false,
+      },
+    ]);
     console.log("add handled");
   }
+
+  //REMOVE SECTION                                      ////////////////////////////////////
+
   function removeHandler() {
     console.log("remove handled");
   }
+
+  useEffect(() => console.log("itemlist", itemList), [itemList]);
+
+  //SUBMIT SECTION                                      ////////////////////////////////////
+
+  function submitHandler() {
+    let total;
+    if (itemList.length > 1) {
+      total = itemList.reduce(
+        (acc, val) => acc.attachments.length + val.attachments.length
+      );
+    } else {
+      total = itemList[0].attachments.length;
+    }
+    setEditObject({ ...storedObject, caseItems: itemList, attachments: total });
+  }
+
+  useEffect(() => {
+    let newStorage = storage.map((item) => {
+      if (item.caseID === editObject.caseID) {
+        return editObject;
+      } else {
+        return item;
+      }
+    });
+    localStorage.setItem("caseObject", JSON.stringify(newStorage));
+    console.log("newStorage", newStorage);
+  }, [editObject]);
+
   return (
     <div id="mobile">
       <div id="header" className="primary">
@@ -88,7 +127,7 @@ export default function EditCase() {
         </div>
       </div>
       <div id="middle">
-        {editObject.caseItems.map((item, index) => (
+        {itemList.map((item, index) => (
           <EnterItem
             itemIndex={index}
             title={getTitle}
@@ -97,9 +136,9 @@ export default function EditCase() {
             totalCount={itemList.length}
             handleRemove={removeHandler}
             editValues={{
-              description: storedObject.caseItems[index].description,
-              title: storedObject.caseItems[index].title,
-              attachments: storedObject.caseItems[index].attachments,
+              description: item.description,
+              title: item.title,
+              attachments: item.attachments,
             }}
             key={index}
           />

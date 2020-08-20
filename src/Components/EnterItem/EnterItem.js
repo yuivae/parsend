@@ -27,9 +27,10 @@ function EnterItem({
   if (editValues) {
     editTitle = editValues.title ? editValues.title : "";
     editDescription = editValues.description ? editValues.description : "";
-    editAttachments = editValues.attachments ? editValues.attachments : [];
+    if (editValues.attachments) {
+      editAttachments = editValues.attachments;
+    }
   }
-  console.log("editattachments", editValues.attachments);
 
   const [attached, setAttached] = useState(editAttachments);
   //REMOVE SECTION                                      ////////////////////////////////////
@@ -50,6 +51,15 @@ function EnterItem({
   }
 
   //UPDATE SECTION                                      ////////////////////////////////////
+
+  //if there are attachments update class
+  useEffect(() => {
+    if (editValues.attachments.length > 0) {
+      setProgressColor("set");
+    } else {
+      return;
+    }
+  }, [editAttachments]);
 
   function blurHandler(event) {
     //onBlur; a.k.a when clicked outside the zone of description, the desc prop will be updated with the text input
