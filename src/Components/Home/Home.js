@@ -33,7 +33,9 @@ export default function Home() {
             </h4>
             <h4>Date Created 14/02/2020</h4>
           </div>
-          <h2>•1/1</h2>
+          <h2>
+            •{index + 1}/{objectList.length}
+          </h2>
         </div>
       </div>
     ));
@@ -58,18 +60,6 @@ export default function Home() {
           <NavLink to="/parsend">
             <i className="fas fa-list"></i>
             <h3>Cases</h3>
-          </NavLink>
-        </div>
-        <div className="navbar-option">
-          <NavLink to="/parsend">
-            <i className="fas fa-calendar-alt"></i>
-            <h3>Calendar</h3>
-          </NavLink>
-        </div>
-        <div className="navbar-option">
-          <NavLink to="/parsend">
-            <i className="fas fa-user"></i>
-            <h3>Profile</h3>
           </NavLink>
         </div>
       </div>

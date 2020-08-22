@@ -20,6 +20,9 @@ export default function EditCase() {
   const [description, setDescription] = useState({});
   const [attached, setAttached] = useState({});
 
+  //removeQuery will trigger useEffect and eventually handle removing selected items
+  const [removeQuery, setRemoveQuery] = useState(null);
+
   //UPDATE SECTION                                      ////////////////////////////////////
 
   //GET DESCRIPTION from component and update state
@@ -87,9 +90,19 @@ export default function EditCase() {
 
   //REMOVE SECTION                                      ////////////////////////////////////
 
-  function removeHandler() {
-    console.log("remove handled");
-  }
+  const removeHandler = (removeKey) => {
+    setRemoveQuery(removeKey);
+  };
+
+  useEffect(() => {
+    console.log("current Itemlist", itemList);
+    //not possible to delete the first item
+    if (itemList.length > 1) {
+      setItemList(itemList.filter((item, index) => index !== removeQuery));
+    }
+    //to reset removekey at each click I nullify the value here
+    setRemoveQuery(null);
+  }, [removeQuery]);
 
   useEffect(() => console.log("itemlist", itemList), [itemList]);
 

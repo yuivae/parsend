@@ -54,7 +54,7 @@ function EnterItem({
 
   //if there are attachments update class
   useEffect(() => {
-    if (editValues.attachments.length > 0) {
+    if (editAttachments.length > 0) {
       setProgressColor("set");
     } else {
       return;
