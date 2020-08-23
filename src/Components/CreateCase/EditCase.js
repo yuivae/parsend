@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./CreateCase.scss";
 import { useLocation, useHistory } from "react-router-dom";
 import EnterItem from "../EnterItem/EnterItem";
@@ -22,6 +22,9 @@ export default function EditCase() {
 
   //removeQuery will trigger useEffect and eventually handle removing selected items
   const [removeQuery, setRemoveQuery] = useState(null);
+
+  //control is created to control on mount to rendering.
+  const control = useRef(false);
 
   //UPDATE SECTION                                      ////////////////////////////////////
 
@@ -62,14 +65,17 @@ export default function EditCase() {
     setAttached(attached);
   };
   useEffect(() => {
-    let newList = itemList.map((item, index) => {
+    const newList = itemList.map((item, index) => {
       if (index === attached.itemIndex) {
-        return { ...item, attachments: attached.attached };
+        //FILES API is not an existing array but it is a directory to the file. Here I create a new array of objects with needed props.
+        const array = Array.from(attached.attached).map((item) => {
+          return { name: item.name, size: item.size, type: item.type };
+        });
+        return { ...item, attachments: array };
       } else {
         return item;
       }
     });
-    console.log("attached", newList);
     setItemList(newList);
   }, [attached]);
 
@@ -117,19 +123,25 @@ export default function EditCase() {
     } else {
       total = itemList[0].attachments.length;
     }
+    control.current = true;
     setEditObject({ ...storedObject, caseItems: itemList, attachments: total });
   }
 
   useEffect(() => {
-    let newStorage = storage.map((item) => {
-      if (item.caseID === editObject.caseID) {
-        return editObject;
-      } else {
-        return item;
-      }
-    });
-    localStorage.setItem("caseObject", JSON.stringify(newStorage));
-    console.log("newStorage", newStorage);
+    if (control.current) {
+      let newStorage = storage.map((item) => {
+        if (item.caseID === editObject.caseID) {
+          return editObject;
+        } else {
+          return item;
+        }
+      });
+      localStorage.setItem("caseObject", JSON.stringify(newStorage));
+      history.push({
+        pathname: "/parsend",
+      });
+      console.log("newStorage", newStorage);
+    }
   }, [editObject]);
 
   return (
@@ -167,7 +179,7 @@ export default function EditCase() {
           Return
         </button>
         <button className="button primary" onClick={submitHandler}>
-          Create Case
+          Save Case
         </button>
       </div>
     </div>
