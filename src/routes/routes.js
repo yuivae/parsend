@@ -10,8 +10,7 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/parsend-login" exact component={Login}></Route>
-        <Route path="/parsend" exact component={Home}></Route>
+        <Route path="/filesareus" exact component={Home}></Route>
         <Route path="/create-new" exact component={CreateCase}></Route>
         <Route path="/edit-case" exact component={EditCase}></Route>
       </Switch>

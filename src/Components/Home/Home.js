@@ -57,7 +57,7 @@ export default function Home() {
           </NavLink>
         </div>
         <div className="navbar-option">
-          <NavLink to="/parsend">
+          <NavLink to="/filesareus">
             <i className="fas fa-list"></i>
             <h3>Cases</h3>
           </NavLink>

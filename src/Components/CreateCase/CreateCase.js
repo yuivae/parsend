@@ -165,7 +165,7 @@ export default function CreateCase() {
       existingIDs = [...existingIDs, caseID];
       localStorage.setItem("caseIDs", JSON.stringify(existingIDs));
       history.push({
-        pathname: "/parsend",
+        pathname: "/filesareus",
       });
     }
   }, [caseObject]);
