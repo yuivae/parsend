@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/filesareus/static/css/main.0bcc2afa.chunk.css",
+    "main.css": "/filesareus/static/css/main.e2fecc69.chunk.css",
     "main.js": "/filesareus/static/js/main.76839288.chunk.js",
     "main.js.map": "/filesareus/static/js/main.76839288.chunk.js.map",
     "runtime-main.js": "/filesareus/static/js/runtime-main.fdd81b05.js",
@@ -8,15 +8,15 @@
     "static/js/2.561c56b3.chunk.js": "/filesareus/static/js/2.561c56b3.chunk.js",
     "static/js/2.561c56b3.chunk.js.map": "/filesareus/static/js/2.561c56b3.chunk.js.map",
     "index.html": "/filesareus/index.html",
-    "precache-manifest.677a5d08cd58732cbdcde8d2b947cb3c.js": "/filesareus/precache-manifest.677a5d08cd58732cbdcde8d2b947cb3c.js",
+    "precache-manifest.06ee5aacadaed319ffda5344dcb9c408.js": "/filesareus/precache-manifest.06ee5aacadaed319ffda5344dcb9c408.js",
     "service-worker.js": "/filesareus/service-worker.js",
-    "static/css/main.0bcc2afa.chunk.css.map": "/filesareus/static/css/main.0bcc2afa.chunk.css.map",
+    "static/css/main.e2fecc69.chunk.css.map": "/filesareus/static/css/main.e2fecc69.chunk.css.map",
     "static/js/2.561c56b3.chunk.js.LICENSE.txt": "/filesareus/static/js/2.561c56b3.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.fdd81b05.js",
     "static/js/2.561c56b3.chunk.js",
-    "static/css/main.0bcc2afa.chunk.css",
+    "static/css/main.e2fecc69.chunk.css",
     "static/js/main.76839288.chunk.js"
   ]
 }
